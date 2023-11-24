@@ -1,9 +1,10 @@
-import dropDownMenuMaker from "dropdown-menu-builder/src/dropdown-menu/dropdown-menu";
+// /* eslint-disable import/no-extraneous-dependencies */
+// import dropDownMenuMaker from "dropdown-menu-builder/src/dropdown-menu/dropdown-menu";
 
-function pageLoad() {
-  const toggleMenu = document.querySelector(".toggleMenu");
+// import getCurrentWeatherLocationData from "../Logic/API/getWeatherLocation";
 
-  toggleMenu.appendChild(dropDownMenuMaker(["Home", "Today", "3-Day"]));
-}
+// import displayLocationPage from "./display_location_information/displayLocationPage";
 
-export default pageLoad;
+// function pageLoad() {}
+
+// export default pageLoad;

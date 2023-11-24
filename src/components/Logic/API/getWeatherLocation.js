@@ -11,8 +11,6 @@ async function getCurrentWeatherLocationData(location) {
     }
 
     const weatherData = await weatherResponse.json();
-    console.log("THIS IS THE WEATHER DATA:");
-    console.log(weatherData);
 
     return weatherData;
   } catch (error) {

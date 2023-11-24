@@ -6,6 +6,7 @@ function displaySearchElement() {
   const inputElement = document.createElement("input");
   inputElement.id = "search";
   inputElement.type = "text";
+  inputElement.autocomplete = "off";
   inputElement.placeholder = "Enter City";
 
   const searchBtn = document.createElement("button");

@@ -1,26 +1,27 @@
-function displayTodayForecast(lengthOfData) {
+function displayTodayForecast(forecastArr) {
   // Will display every hour of today's date
   const todayForeCastContainer = document.createElement("section");
 
   todayForeCastContainer.classList.add("todayForeCastContainer");
 
-  for (let i = 0; i < lengthOfData; i += 1) {
+  for (let i = 0; i < forecastArr.length; i += 1) {
     const itemContainer = document.createElement("article");
 
     const temperatureDisplay = document.createElement("h4");
-    temperatureDisplay.textContent = "DUMMY TITLE";
+    temperatureDisplay.textContent = `${forecastArr[i].temp_c}`;
 
     const timeDisplay = document.createElement("h5");
-    timeDisplay.textContent = "TIME DUMMY";
+    timeDisplay.textContent = `${forecastArr[i].time}`;
 
     const imgDisplay = document.createElement("img");
+    imgDisplay.src = `${forecastArr[i].condition.icon}`;
     imgDisplay.alt = "DUMMY IMAGE";
 
     itemContainer.appendChild(temperatureDisplay);
 
-    itemContainer.appendChild(timeDisplay);
-
     itemContainer.appendChild(imgDisplay);
+
+    itemContainer.appendChild(timeDisplay);
 
     todayForeCastContainer.appendChild(itemContainer);
   }

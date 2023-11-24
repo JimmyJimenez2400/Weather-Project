@@ -9,6 +9,7 @@ async function getTodayForecastHours(value) {
 
   const todayForecast = foreCastArr[0].hour;
 
+  console.log("THIS IS TODAY FORECAST HOUR");
   console.log(todayForecast);
 
   return todayForecast;

@@ -11,7 +11,8 @@ async function getLocationInformation(value) {
     id: getLocationData.tz_id,
   };
 
-  console.log(getLocationData);
+  console.log("THIS IS LOCATION DATA, OBJECt INFORMATION:");
+  console.log(information);
 
   return information;
 }
