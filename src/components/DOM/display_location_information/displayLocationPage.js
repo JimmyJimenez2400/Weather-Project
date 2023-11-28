@@ -10,7 +10,7 @@ function displayLocationPage(locationData, todayForecast, currentData) {
   displayLocationContainer.id = "displayLocationContainer";
 
   displayLocationContainer.appendChild(
-    displayLocationInfo(locationData, currentData)
+    displayLocationInfo(locationData, currentData, todayForecast)
   );
 
   displayLocationContainer.appendChild(displayTodayForecast(todayForecast));

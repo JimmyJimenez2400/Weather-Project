@@ -8,7 +8,9 @@ function displayTodayForecast(forecastArr) {
     const itemContainer = document.createElement("article");
 
     const temperatureDisplay = document.createElement("h4");
-    temperatureDisplay.textContent = `${forecastArr[i].temp_c}`;
+    temperatureDisplay.classList.add("hourTemperature");
+    temperatureDisplay.textContent = `${forecastArr[i].temp_c}°C`;
+    temperatureDisplay.setAttribute("currentTemp", "c");
 
     const timeDisplay = document.createElement("h5");
     timeDisplay.textContent = `${forecastArr[i].time}`;

@@ -502,105 +502,6 @@ var update = injectStylesIntoStyleTag_default()(style/* default */.Z, options);
 
        /* harmony default export */ const src_style = (style/* default */.Z && style/* default */.Z.locals ? style/* default */.Z.locals : undefined);
 
-;// CONCATENATED MODULE: ./node_modules/dropdown-menu-builder/src/dropdown-menu/dropDownMenuListener.js
-function dropDownMenuListener(e) {
-  const dropDownMenu = document.getElementById("dropDownMenu");
-
-  const toggleDropDown = function () {
-    dropDownMenu.classList.toggle("show");
-  };
-
-  e.stopPropagation();
-  toggleDropDown();
-
-  document.documentElement.addEventListener("click", () => {
-    if (dropDownMenu.classList.contains("show")) {
-      toggleDropDown();
-    }
-  });
-}
-
-;// CONCATENATED MODULE: ./node_modules/dropdown-menu-builder/src/dropdown-menu/dropdown-menu.js
-
-
-function dropDownMenuMaker(words) {
-  const dropDownContainer = document.createElement("section");
-  dropDownContainer.classList.add("dropDownContainer");
-
-  const dropDownButton = document.createElement("button");
-  dropDownButton.classList.add("dropDownButton");
-  dropDownButton.setAttribute(
-    "style",
-    "background-color: white; display: flex; align-items: center; justify-content: flex-start; column-gap: 0.5rem; padding: 0.6rem; border-radius: 5px; border: none; box-shadow: rgba(0,0,0,0.05) 0px 6px 10px 0px, rgba(0, 0,0,0.1) 0px 0px 0px 1px;; position: relative;"
-  );
-  dropDownButton.setAttribute("id", "dropDownButton");
-  dropDownButton.textContent = "Drop Down Menu";
-
-  dropDownButton.addEventListener("click", dropDownMenuListener);
-
-  const dropDownMenu = document.createElement("section");
-  dropDownMenu.setAttribute(
-    "style",
-    "position: absolute; width: 250px;box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px 0px,rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;; border-radius: 5px; margin-top: 0.3rem; background-color: white; transform: translateY(0.5rem); visibility: hidden; opacity: 1;"
-  );
-  dropDownMenu.setAttribute("id", "dropDownMenu");
-  dropDownMenu.classList.add("dropDownMenu");
-
-  for (let i = 0; i < words.length; i += 1) {
-    console.log(words[i]);
-    const wordContainer = document.createElement("a");
-    wordContainer.classList.add("wordElement");
-    wordContainer.setAttribute(
-      "style",
-      " display: flex; align-items: center; column-gap: 0.5rem; padding: 0.8rem 1rem; text-decoration:  none; color: black;"
-    );
-    wordContainer.addEventListener("mouseover", (e) => {
-      e.target.style.backgroundColor = "black";
-      e.target.style.color = "white";
-
-      setTimeout(() => {
-        e.target.style.color = "black";
-        e.target.style.backgroundColor = "white";
-      }, 300);
-    });
-    wordContainer.href = `#${words[i]}`;
-    wordContainer.textContent = words[i];
-
-    dropDownMenu.appendChild(wordContainer);
-  }
-
-  dropDownContainer.appendChild(dropDownButton);
-  dropDownContainer.appendChild(dropDownMenu);
-
-  return dropDownContainer;
-}
-
-// In order to make our drop down menu, we essentially want to take in as many words as possible
-
-// Perhaps an array as argument is better
-
-// We need to create the structure
-
-/* 
-
-[section = "container"]
-[][button = "btn"]
-[][section = "dropdownMenu"]
-[][][]TEXT
-[]
-*/
-
-;// CONCATENATED MODULE: ./src/components/DOM/pageLoad.js
-
-
-function pageLoad() {
-  const toggleMenu = document.querySelector(".toggleMenu");
-
-  toggleMenu.appendChild(dropDownMenuMaker(["Home", "Today", "3-Day"]));
-}
-
-/* harmony default export */ const DOM_pageLoad = (pageLoad);
-
 ;// CONCATENATED MODULE: ./src/components/Logic/API/getWeatherLocation.js
 // eslint-disable-next-line consistent-return
 async function getCurrentWeatherLocationData(location) {
@@ -615,8 +516,6 @@ async function getCurrentWeatherLocationData(location) {
     }
 
     const weatherData = await weatherResponse.json();
-    console.log("THIS IS THE WEATHER DATA:");
-    console.log(weatherData);
 
     return weatherData;
   } catch (error) {
@@ -635,6 +534,7 @@ function displaySearchElement() {
   const inputElement = document.createElement("input");
   inputElement.id = "search";
   inputElement.type = "text";
+  inputElement.autocomplete = "off";
   inputElement.placeholder = "Enter City";
 
   const searchBtn = document.createElement("button");
@@ -653,9 +553,12 @@ function displaySearchElement() {
 ;// CONCATENATED MODULE: ./src/components/DOM/display_location_information/displayLocationInfo.js
 
 
-function displayLocationInfo() {
+function displayLocationInfo(location, currentData) {
   const displayLocationInfoContainer = document.createElement("section");
   displayLocationInfoContainer.classList.add("display-location-info");
+
+  const locationInfoContainer = document.createElement("section");
+  locationInfoContainer.classList.add("locationInfoContainer");
 
   const countryDisplayContainer = document.createElement("section");
   countryDisplayContainer.classList.add("countryDisplayContainer");
@@ -663,7 +566,7 @@ function displayLocationInfo() {
   const countryDisplayTitle = document.createElement("h2");
   countryDisplayTitle.classList.add("countryDisplayTitle");
 
-  countryDisplayTitle.textContent = "United States of America";
+  countryDisplayTitle.textContent = `${location.country}`;
 
   countryDisplayContainer.appendChild(countryDisplayTitle);
 
@@ -672,18 +575,49 @@ function displayLocationInfo() {
 
   const regionDisplayTitle = document.createElement("h3");
 
-  regionDisplayTitle.textContent = "New York";
-
-  const locationInfoContainer = document.createElement("section");
-  locationInfoContainer.classList.add("locationInfoContainer");
+  regionDisplayTitle.textContent = `${location.region}`;
 
   regionDisplayContainer.appendChild(regionDisplayTitle);
 
+  const currentTimeDisplayContainer = document.createElement("section");
+  const currentTimeDisplay = document.createElement("h3");
+  currentTimeDisplay.textContent = `${location.localtime}`;
+
+  currentTimeDisplayContainer.appendChild(currentTimeDisplay);
+
   locationInfoContainer.appendChild(countryDisplayContainer);
   locationInfoContainer.appendChild(regionDisplayContainer);
+  locationInfoContainer.appendChild(currentTimeDisplayContainer);
 
   displayLocationInfoContainer.appendChild(searchElement());
   displayLocationInfoContainer.appendChild(locationInfoContainer);
+
+  const todayTemperatureContainer = document.createElement("section");
+  todayTemperatureContainer.classList.add("todayTemperatureContainer");
+
+  const todayTemperatureTitle = document.createElement("h1");
+
+  todayTemperatureTitle.textContent = `${currentData.temp_c}`; // We should make this an object property, status.current_temperature which will be C but when button pressed, it would be F
+
+  const todayTemperatureIcon = document.createElement("img");
+  todayTemperatureIcon.alt = `${currentData.condition.icon}`;
+
+  const settingWeatherIcon = document.createElement("img");
+  settingWeatherIcon.alt = `${currentData.condition.icon}`;
+
+  const feelsLikeTitle = document.createElement("h4");
+  feelsLikeTitle.textContent = `Feels like ${currentData.feelslike_c}`;
+
+  const airType = document.createElement("h4");
+  airType.textContent = `${currentData.condition.text}`;
+
+  todayTemperatureContainer.appendChild(todayTemperatureTitle);
+  todayTemperatureContainer.appendChild(todayTemperatureIcon);
+  todayTemperatureContainer.appendChild(settingWeatherIcon);
+  todayTemperatureContainer.appendChild(feelsLikeTitle);
+  todayTemperatureContainer.appendChild(airType);
+
+  displayLocationInfoContainer.appendChild(todayTemperatureContainer);
 
   return displayLocationInfoContainer;
 }
@@ -691,29 +625,30 @@ function displayLocationInfo() {
 /* harmony default export */ const display_location_information_displayLocationInfo = (displayLocationInfo);
 
 ;// CONCATENATED MODULE: ./src/components/DOM/display_location_information/displayTodayForecast.js
-function displayTodayForecast(lengthOfData) {
+function displayTodayForecast(forecastArr) {
   // Will display every hour of today's date
   const todayForeCastContainer = document.createElement("section");
 
   todayForeCastContainer.classList.add("todayForeCastContainer");
 
-  for (let i = 0; i < lengthOfData; i += 1) {
+  for (let i = 0; i < forecastArr.length; i += 1) {
     const itemContainer = document.createElement("article");
 
     const temperatureDisplay = document.createElement("h4");
-    temperatureDisplay.textContent = "DUMMY TITLE";
+    temperatureDisplay.textContent = `${forecastArr[i].temp_c}`;
 
     const timeDisplay = document.createElement("h5");
-    timeDisplay.textContent = "TIME DUMMY";
+    timeDisplay.textContent = `${forecastArr[i].time}`;
 
     const imgDisplay = document.createElement("img");
+    imgDisplay.src = `${forecastArr[i].condition.icon}`;
     imgDisplay.alt = "DUMMY IMAGE";
 
     itemContainer.appendChild(temperatureDisplay);
 
-    itemContainer.appendChild(timeDisplay);
-
     itemContainer.appendChild(imgDisplay);
+
+    itemContainer.appendChild(timeDisplay);
 
     todayForeCastContainer.appendChild(itemContainer);
   }
@@ -728,53 +663,127 @@ function displayTodayForecast(lengthOfData) {
 
 
 
-function displayLocationPage() {
+function displayLocationPage(locationData, todayForecast, currentData) {
   const displayLocationContainer = document.createElement("section");
 
   // const displayLocationInfo = document.querySelector(".display-location-info");
 
   displayLocationContainer.id = "displayLocationContainer";
 
-  displayLocationContainer.appendChild(display_location_information_displayLocationInfo());
+  displayLocationContainer.appendChild(
+    display_location_information_displayLocationInfo(locationData, currentData)
+  );
 
-  displayLocationContainer.appendChild(display_location_information_displayTodayForecast(4));
+  displayLocationContainer.appendChild(display_location_information_displayTodayForecast(todayForecast));
 
   return displayLocationContainer;
 }
 
 /* harmony default export */ const display_location_information_displayLocationPage = (displayLocationPage);
 
+;// CONCATENATED MODULE: ./src/components/Logic/getLocationData.js
+async function getLocationInformation(value) {
+  const getWeatherLocationData = await value;
+
+  const getLocationData = await getWeatherLocationData.location;
+
+  const information = {
+    name: getLocationData.name,
+    region: getLocationData.region,
+    country: getLocationData.country,
+    localtime: getLocationData.localtime,
+    id: getLocationData.tz_id,
+  };
+
+  console.log("THIS IS LOCATION DATA, OBJECt INFORMATION:");
+  console.log(information);
+
+  return information;
+}
+
+/* harmony default export */ const getLocationData = (getLocationInformation);
+
+;// CONCATENATED MODULE: ./src/components/Logic/getForecastHour.js
+async function getTodayForecastHours(value) {
+  const weatherLocationData = await value;
+
+  console.log(weatherLocationData);
+
+  const { forecast } = weatherLocationData;
+
+  const foreCastArr = forecast.forecastday;
+
+  const todayForecast = foreCastArr[0].hour;
+
+  console.log("THIS IS TODAY FORECAST HOUR");
+  console.log(todayForecast);
+
+  return todayForecast;
+}
+
+/* harmony default export */ const getForecastHour = (getTodayForecastHours);
+
+;// CONCATENATED MODULE: ./src/components/Logic/getCurrentData.js
+async function getCurrentData(value) {
+  const getWeatherLocationData = await value;
+
+  const currentData = await getWeatherLocationData.current;
+
+  console.log("THIS IS CURRENT DATA:");
+  console.log(currentData);
+
+  return currentData;
+}
+
+/* harmony default export */ const Logic_getCurrentData = (getCurrentData);
+
+;// CONCATENATED MODULE: ./src/components/flowControl/flowControl.js
+// Flow control will handle how the status of the current temperature (c/f), this will also execute both dom and api calls
+
+
+
+
+
+
+
+
+
+
+
+async function homePageListener(value) {
+  const jsonData = await getWeatherLocation(value);
+
+  const locationData = await getLocationData(jsonData);
+
+  const todayForecastHours = await getForecastHour(jsonData);
+
+  const currentData = await Logic_getCurrentData(jsonData);
+
+  const content = document.querySelector("#content");
+
+  const welcomeScreen = document.querySelector("#welcomeScreen");
+  welcomeScreen.remove();
+
+  content.appendChild(
+    display_location_information_displayLocationPage(locationData, todayForecastHours, currentData)
+  );
+}
+
+/* harmony default export */ const flowControl = (homePageListener);
+
 ;// CONCATENATED MODULE: ./src/index.js
 
 
 
 
+const searchButton = document.querySelector(".searchBtn");
 
+const inputValue = document.querySelector("#location");
 
-
-DOM_pageLoad();
-
-const searchBtn = document.querySelector(".searchBtn");
-
-searchBtn.addEventListener("click", () => {
-  const content = document.querySelector("#content");
-  // get input value
-  const getInput = document.querySelector("#location");
-  const getInputValue = getInput.value;
-
-  console.log(getInputValue);
-
-  getWeatherLocation(getInputValue);
-
-  const welcomeScreen = document.querySelector("#welcomeScreen");
-  welcomeScreen.remove();
-
-  content.appendChild(display_location_information_displayLocationPage());
-
-  // once we have the data, we'll remove the initial page and load in the new one
-
-  // pass input value to function
-  // remove this page and grab the other
+searchButton.addEventListener("click", () => {
+  const getUserInputValue = inputValue.value;
+  console.log(getUserInputValue);
+  flowControl(getUserInputValue);
 });
 
 })();

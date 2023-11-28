@@ -10,21 +10,8 @@ import getTodayForecastHours from "../Logic/getForecastHour";
 
 import getCurrentData from "../Logic/getCurrentData";
 
-// import other functions
-const status = {
-  current_city: null,
-  current_temperature_sign: "c",
-};
-
 async function homePageListener(value) {
-  // we will use the improted value here
-  // call dom functions
-  status.current_city = value;
-
   const jsonData = await getCurrentWeatherLocationData(value);
-
-  console.log("THIS IS JSONDATA:");
-  console.log(jsonData);
 
   const locationData = await getLocationInformation(jsonData);
 
