@@ -1,6 +1,6 @@
 import "./style.css";
 
-import homePageListener from "./components/flowControl/flowControl";
+import { homePageListener } from "./components/flowControl/flowControl";
 
 const searchButton = document.querySelector(".searchBtn");
 

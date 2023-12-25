@@ -29,4 +29,23 @@ async function homePageListener(value) {
   );
 }
 
-export default homePageListener;
+async function newPage(value) {
+  const jsonData = await getCurrentWeatherLocationData(value);
+
+  const locationData = await getLocationInformation(jsonData);
+
+  const todayForecastHours = await getTodayForecastHours(jsonData);
+
+  const currentData = await getCurrentData(jsonData);
+
+  const content = document.querySelector("#content");
+
+  const oldPage = document.querySelector("#displayLocationContainer");
+  oldPage.remove();
+
+  content.appendChild(
+    displayLocationPage(locationData, todayForecastHours, currentData)
+  );
+}
+
+export { homePageListener, newPage };

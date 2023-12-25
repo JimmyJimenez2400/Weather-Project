@@ -21,8 +21,6 @@ function changeCurrentTemperature(currentData) {
 function changeHourTemperature(forecast) {
   const getAllForecastElements = document.querySelectorAll(".hourTemperature");
 
-  console.log(getAllForecastElements);
-
   const forecastElements = Array.from(getAllForecastElements);
 
   for (let i = 0; i < forecast.length; i += 1) {

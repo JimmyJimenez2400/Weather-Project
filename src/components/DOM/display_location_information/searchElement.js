@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-cycle
+import { newPage } from "../../flowControl/flowControl";
+
 function displaySearchElement() {
   const searchContainer = document.createElement("section");
 
@@ -13,6 +16,11 @@ function displaySearchElement() {
   searchBtn.textContent = "Search!";
 
   searchBtn.classList.add("btnSearch");
+
+  searchBtn.addEventListener("click", () => {
+    const inputValue = inputElement.value;
+    newPage(inputValue);
+  });
 
   searchContainer.appendChild(inputElement);
   searchContainer.appendChild(searchBtn);

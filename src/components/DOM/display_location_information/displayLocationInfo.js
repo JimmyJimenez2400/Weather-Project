@@ -35,17 +35,39 @@ function displayLocationInfo(location, currentData, todayForecast) {
 
   currentTimeDisplayContainer.appendChild(currentTimeDisplay);
 
+  const searchElement = displaySearchElement();
+
+  const changeTemperatureButton = document.createElement("p");
+  changeTemperatureButton.classList.add("changeTemperatureBtn");
+
+  const cTemp = document.createElement("span");
+
+  cTemp.textContent = "C";
+  cTemp.classList.add("cTemp");
+
+  changeTemperatureButton.appendChild(cTemp);
+
+  const splitter = document.createElement("span");
+  splitter.textContent = "/";
+
+  changeTemperatureButton.appendChild(splitter);
+
+  const fTemp = document.createElement("span");
+
+  fTemp.textContent = "F";
+  fTemp.classList.add("fTemp");
+
+  changeTemperatureButton.appendChild(fTemp);
+
+  changeTemperatureButton.addEventListener("click", () => {
+    changeTemperature(todayForecast, currentData);
+  });
+
   locationInfoContainer.appendChild(countryDisplayContainer);
   locationInfoContainer.appendChild(regionDisplayContainer);
   locationInfoContainer.appendChild(currentTimeDisplayContainer);
-
-  const searchElement = displaySearchElement();
-
-  displayLocationInfoContainer.appendChild(searchElement);
-
-  searchElement.addEventListener("click", () => {
-    changeTemperature(todayForecast, currentData);
-  });
+  locationInfoContainer.appendChild(searchElement);
+  locationInfoContainer.appendChild(changeTemperatureButton);
 
   displayLocationInfoContainer.appendChild(locationInfoContainer);
 

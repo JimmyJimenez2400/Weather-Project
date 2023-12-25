@@ -526,6 +526,9 @@ async function getCurrentWeatherLocationData(location) {
 /* harmony default export */ const getWeatherLocation = (getCurrentWeatherLocationData);
 
 ;// CONCATENATED MODULE: ./src/components/DOM/display_location_information/searchElement.js
+// eslint-disable-next-line import/no-cycle
+
+
 function displaySearchElement() {
   const searchContainer = document.createElement("section");
 
@@ -542,18 +545,73 @@ function displaySearchElement() {
 
   searchBtn.classList.add("btnSearch");
 
+  searchBtn.addEventListener("click", () => {
+    const inputValue = inputElement.value;
+    newPage(inputValue);
+  });
+
   searchContainer.appendChild(inputElement);
   searchContainer.appendChild(searchBtn);
 
   return searchContainer;
 }
 
-/* harmony default export */ const searchElement = (displaySearchElement);
+/* harmony default export */ const display_location_information_searchElement = (displaySearchElement);
+
+;// CONCATENATED MODULE: ./src/components/Logic/changeTemperature.js
+function changeCurrentTemperature(currentData) {
+  const currentTemperature = document.querySelectorAll(".temperature_c");
+
+  for (let i = 0; i < currentTemperature.length; i += 1) {
+    const currentTemperatureAttribute =
+      currentTemperature[i].getAttribute("currenttemp");
+    if (currentTemperatureAttribute === "c") {
+      currentTemperature[i].setAttribute("currenttemp", "f");
+      currentTemperature[0].textContent = `${currentData.temp_f}℉
+      `;
+      currentTemperature[1].textContent = `Feels Like ${currentData.feelslike_f}℉`;
+    } else if (currentTemperatureAttribute === "f") {
+      currentTemperature[i].setAttribute("currenttemp", "c");
+      currentTemperature[0].textContent = `${currentData.temp_c}°C
+      `;
+      currentTemperature[1].textContent = `Feels Like ${currentData.feelslike_c}°C`;
+    }
+  }
+}
+
+function changeHourTemperature(forecast) {
+  const getAllForecastElements = document.querySelectorAll(".hourTemperature");
+
+  const forecastElements = Array.from(getAllForecastElements);
+
+  for (let i = 0; i < forecast.length; i += 1) {
+    const celciusTemp = forecast[i].temp_c;
+    const fahrenheitTemp = forecast[i].temp_f;
+    const getCurrentStatus = forecastElements[i].getAttribute("currenttemp");
+
+    if (getCurrentStatus === "c") {
+      forecastElements[i].setAttribute("currenttemp", "f");
+      forecastElements[i].textContent = `${fahrenheitTemp} ℉`;
+    } else if (getCurrentStatus === "f") {
+      forecastElements[i].setAttribute("currenttemp", "c");
+      forecastElements[i].textContent = `${celciusTemp} °C`;
+    }
+  }
+}
+
+function changeTemperature(forecast, currentData) {
+  changeCurrentTemperature(currentData);
+  changeHourTemperature(forecast);
+}
+
+/* harmony default export */ const Logic_changeTemperature = (changeTemperature);
 
 ;// CONCATENATED MODULE: ./src/components/DOM/display_location_information/displayLocationInfo.js
 
 
-function displayLocationInfo(location, currentData) {
+
+
+function displayLocationInfo(location, currentData, todayForecast) {
   const displayLocationInfoContainer = document.createElement("section");
   displayLocationInfoContainer.classList.add("display-location-info");
 
@@ -582,22 +640,42 @@ function displayLocationInfo(location, currentData) {
   const currentTimeDisplayContainer = document.createElement("section");
   const currentTimeDisplay = document.createElement("h3");
   currentTimeDisplay.textContent = `${location.localtime}`;
+  currentTimeDisplay.setAttribute("currentTemp", "c");
 
   currentTimeDisplayContainer.appendChild(currentTimeDisplay);
+
+  const searchElement = display_location_information_searchElement();
+
+  const changeTemperatureButton = document.createElement("button");
+  changeTemperatureButton.classList.add("changeTemperatureBtn");
+
+  const spanC = document.createElement("span");
+  spanC.textContent = "HELLO";
+  spanC.classList.add("c_temp");
+
+  changeTemperatureButton.appendChild(spanC);
+  changeTemperatureButton.textContent = "C/F";
+
+  changeTemperatureButton.addEventListener("click", () => {
+    Logic_changeTemperature(todayForecast, currentData);
+  });
 
   locationInfoContainer.appendChild(countryDisplayContainer);
   locationInfoContainer.appendChild(regionDisplayContainer);
   locationInfoContainer.appendChild(currentTimeDisplayContainer);
+  locationInfoContainer.appendChild(searchElement);
+  locationInfoContainer.appendChild(changeTemperatureButton);
 
-  displayLocationInfoContainer.appendChild(searchElement());
   displayLocationInfoContainer.appendChild(locationInfoContainer);
 
   const todayTemperatureContainer = document.createElement("section");
   todayTemperatureContainer.classList.add("todayTemperatureContainer");
 
   const todayTemperatureTitle = document.createElement("h1");
+  todayTemperatureTitle.classList.add("temperature_c");
+  todayTemperatureTitle.setAttribute("currentTemp", "c");
 
-  todayTemperatureTitle.textContent = `${currentData.temp_c}`; // We should make this an object property, status.current_temperature which will be C but when button pressed, it would be F
+  todayTemperatureTitle.textContent = `${currentData.temp_c}°C.`; // We should make this an object property, status.current_temperature which will be C but when button pressed, it would be F
 
   const todayTemperatureIcon = document.createElement("img");
   todayTemperatureIcon.alt = `${currentData.condition.icon}`;
@@ -606,10 +684,13 @@ function displayLocationInfo(location, currentData) {
   settingWeatherIcon.alt = `${currentData.condition.icon}`;
 
   const feelsLikeTitle = document.createElement("h4");
-  feelsLikeTitle.textContent = `Feels like ${currentData.feelslike_c}`;
+  feelsLikeTitle.classList.add("temperature_c");
+  feelsLikeTitle.textContent = `Feels like ${currentData.feelslike_c}°C`;
+  feelsLikeTitle.setAttribute("currentTemp", "c");
 
   const airType = document.createElement("h4");
   airType.textContent = `${currentData.condition.text}`;
+  airType.setAttribute("currentTemp", "c");
 
   todayTemperatureContainer.appendChild(todayTemperatureTitle);
   todayTemperatureContainer.appendChild(todayTemperatureIcon);
@@ -635,7 +716,9 @@ function displayTodayForecast(forecastArr) {
     const itemContainer = document.createElement("article");
 
     const temperatureDisplay = document.createElement("h4");
-    temperatureDisplay.textContent = `${forecastArr[i].temp_c}`;
+    temperatureDisplay.classList.add("hourTemperature");
+    temperatureDisplay.textContent = `${forecastArr[i].temp_c}°C`;
+    temperatureDisplay.setAttribute("currentTemp", "c");
 
     const timeDisplay = document.createElement("h5");
     timeDisplay.textContent = `${forecastArr[i].time}`;
@@ -671,7 +754,7 @@ function displayLocationPage(locationData, todayForecast, currentData) {
   displayLocationContainer.id = "displayLocationContainer";
 
   displayLocationContainer.appendChild(
-    display_location_information_displayLocationInfo(locationData, currentData)
+    display_location_information_displayLocationInfo(locationData, currentData, todayForecast)
   );
 
   displayLocationContainer.appendChild(display_location_information_displayTodayForecast(todayForecast));
@@ -769,7 +852,26 @@ async function homePageListener(value) {
   );
 }
 
-/* harmony default export */ const flowControl = (homePageListener);
+async function newPage(value) {
+  const jsonData = await getWeatherLocation(value);
+
+  const locationData = await getLocationData(jsonData);
+
+  const todayForecastHours = await getForecastHour(jsonData);
+
+  const currentData = await Logic_getCurrentData(jsonData);
+
+  const content = document.querySelector("#content");
+
+  const oldPage = document.querySelector("#displayLocationContainer");
+  oldPage.remove();
+
+  content.appendChild(
+    display_location_information_displayLocationPage(locationData, todayForecastHours, currentData)
+  );
+}
+
+
 
 ;// CONCATENATED MODULE: ./src/index.js
 
@@ -783,7 +885,7 @@ const inputValue = document.querySelector("#location");
 searchButton.addEventListener("click", () => {
   const getUserInputValue = inputValue.value;
   console.log(getUserInputValue);
-  flowControl(getUserInputValue);
+  homePageListener(getUserInputValue);
 });
 
 })();
