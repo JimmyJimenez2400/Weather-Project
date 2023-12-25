@@ -646,15 +646,27 @@ function displayLocationInfo(location, currentData, todayForecast) {
 
   const searchElement = display_location_information_searchElement();
 
-  const changeTemperatureButton = document.createElement("button");
+  const changeTemperatureButton = document.createElement("p");
   changeTemperatureButton.classList.add("changeTemperatureBtn");
 
-  const spanC = document.createElement("span");
-  spanC.textContent = "HELLO";
-  spanC.classList.add("c_temp");
+  const cTemp = document.createElement("span");
 
-  changeTemperatureButton.appendChild(spanC);
-  changeTemperatureButton.textContent = "C/F";
+  cTemp.textContent = "C";
+  cTemp.classList.add("cTemp");
+
+  changeTemperatureButton.appendChild(cTemp);
+
+  const splitter = document.createElement("span");
+  splitter.textContent = "/";
+
+  changeTemperatureButton.appendChild(splitter);
+
+  const fTemp = document.createElement("span");
+
+  fTemp.textContent = "F";
+  fTemp.classList.add("fTemp");
+
+  changeTemperatureButton.appendChild(fTemp);
 
   changeTemperatureButton.addEventListener("click", () => {
     Logic_changeTemperature(todayForecast, currentData);
