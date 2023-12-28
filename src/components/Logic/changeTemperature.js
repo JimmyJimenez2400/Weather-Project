@@ -38,6 +38,7 @@ function changeHourTemperature(forecast) {
   }
 }
 
+
 function changeTemperature(forecast, currentData) {
   changeCurrentTemperature(currentData);
   changeHourTemperature(forecast);

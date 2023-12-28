@@ -1,3 +1,5 @@
+import convert24Hoursto12HoursFormat from "../../Logic/convert24Hto12H";
+
 function displayTodayForecast(forecastArr) {
   // Will display every hour of today's date
   const todayForeCastContainer = document.createElement("section");
@@ -13,7 +15,9 @@ function displayTodayForecast(forecastArr) {
     temperatureDisplay.setAttribute("currentTemp", "c");
 
     const timeDisplay = document.createElement("h5");
-    timeDisplay.textContent = `${forecastArr[i].time}`;
+    timeDisplay.textContent = `${convert24Hoursto12HoursFormat(
+      forecastArr[i].time
+    )}`;
 
     const imgDisplay = document.createElement("img");
     imgDisplay.src = `${forecastArr[i].condition.icon}`;

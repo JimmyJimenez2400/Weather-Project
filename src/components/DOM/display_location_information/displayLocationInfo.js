@@ -1,6 +1,9 @@
+/* eslint-disable import/no-cycle */
 import displaySearchElement from "./searchElement";
 
 import changeTemperature from "../../Logic/changeTemperature";
+
+import convert24Hoursto12HoursFormat from "../../Logic/convert24Hto12H";
 
 function displayLocationInfo(location, currentData, todayForecast) {
   const displayLocationInfoContainer = document.createElement("section");
@@ -30,7 +33,9 @@ function displayLocationInfo(location, currentData, todayForecast) {
 
   const currentTimeDisplayContainer = document.createElement("section");
   const currentTimeDisplay = document.createElement("h3");
-  currentTimeDisplay.textContent = `${location.localtime}`;
+  currentTimeDisplay.textContent = `${convert24Hoursto12HoursFormat(
+    location.localtime
+  )}`;
   currentTimeDisplay.setAttribute("currentTemp", "c");
 
   currentTimeDisplayContainer.appendChild(currentTimeDisplay);
@@ -43,6 +48,7 @@ function displayLocationInfo(location, currentData, todayForecast) {
   const cTemp = document.createElement("span");
 
   cTemp.textContent = "C";
+  cTemp.classList.add("currentActive");
   cTemp.classList.add("cTemp");
 
   changeTemperatureButton.appendChild(cTemp);

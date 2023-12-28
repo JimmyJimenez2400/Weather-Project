@@ -12,3 +12,19 @@
   visibility: visible !important;
   opacity: 1;
 }
+
+.changeTemperatureBtn {
+  display: flex;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: black;
+  padding: 20px;
+}
+
+.currentActive {
+  background-color: green;
+  color: black;
+  font-weight: 900;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
