@@ -502,9 +502,43 @@ var update = injectStylesIntoStyleTag_default()(style/* default */.Z, options);
 
        /* harmony default export */ const src_style = (style/* default */.Z && style/* default */.Z.locals ? style/* default */.Z.locals : undefined);
 
+;// CONCATENATED MODULE: ./src/components/DOM/loadingComponent/loadingComponent.js
+function loadingComponent() {
+  const loadingContainer = document.createElement("div");
+
+  loadingComponent.classList.add("loadingContainer");
+
+  const loadingText = document.createElement("h1");
+
+  loadingText.textContent = "Gathering data...";
+
+  const loadingContent = document.createElement("img");
+
+  loadingContent.classList.add("loadingContent");
+  loadingComponent.classList.add("active");
+
+  loadingContainer.appendChild(loadingText);
+
+  loadingContainer.appendChild(loadingContent);
+
+  return loadingContainer;
+}
+
+function hideLoadingComponent() {
+  const getLoadingComponent = document.querySelector(".loadingContainer");
+  getLoadingComponent.classList.remove("active");
+  getLoadingComponent.classList.add("hidden");
+}
+
+
+
 ;// CONCATENATED MODULE: ./src/components/Logic/API/getWeatherLocation.js
+
+
 // eslint-disable-next-line consistent-return
 async function getCurrentWeatherLocationData(location) {
+  // SHOW LOADING ANIMATION HERE
+  loadingComponent();
   try {
     const weatherResponse = await fetch(
       `http://api.weatherapi.com/v1/forecast.json?key=bcbc49485145475c855175911231711&q=${location}&days=3`,
@@ -520,6 +554,9 @@ async function getCurrentWeatherLocationData(location) {
     return weatherData;
   } catch (error) {
     console.error(`ERROR HAS BEEN DETECTED: ${error}`);
+  } finally {
+    // hide loader
+    hideLoadingComponent();
   }
 }
 
@@ -599,6 +636,7 @@ function changeHourTemperature(forecast) {
   }
 }
 
+
 function changeTemperature(forecast, currentData) {
   changeCurrentTemperature(currentData);
   changeHourTemperature(forecast);
@@ -606,7 +644,42 @@ function changeTemperature(forecast, currentData) {
 
 /* harmony default export */ const Logic_changeTemperature = (changeTemperature);
 
+;// CONCATENATED MODULE: ./src/components/Logic/convert24Hto12H.js
+function convert24Hoursto12HoursFormat(time) {
+  const splitArr = time.split(" ");
+  // check if its correct
+  const getTime = splitArr[1];
+
+  const splitTime = getTime.split(":");
+
+  // convert 23 to 11 time
+
+  console.log(splitTime);
+  const hourTime = splitTime[0];
+  console.log(hourTime);
+  const minuteTime = splitTime[1];
+
+  if (hourTime > 12) {
+    console.log("GREATER THAN 12");
+    const convert24to12 = hourTime - 12;
+    return `${convert24to12}:${minuteTime} PM`;
+  }
+  // eslint-disable-next-line no-else-return
+  else if (Number(hourTime) === 0) {
+    console.log("IT EQUALS TO 0");
+    const hourTime12 = 12;
+    return `${hourTime12}:${minuteTime} AM`;
+  }
+
+  return `${hourTime}:${minuteTime} AM`;
+}
+
+/* harmony default export */ const convert24Hto12H = (convert24Hoursto12HoursFormat);
+
 ;// CONCATENATED MODULE: ./src/components/DOM/display_location_information/displayLocationInfo.js
+/* eslint-disable import/no-cycle */
+
+
 
 
 
@@ -639,7 +712,9 @@ function displayLocationInfo(location, currentData, todayForecast) {
 
   const currentTimeDisplayContainer = document.createElement("section");
   const currentTimeDisplay = document.createElement("h3");
-  currentTimeDisplay.textContent = `${location.localtime}`;
+  currentTimeDisplay.textContent = `${convert24Hto12H(
+    location.localtime
+  )}`;
   currentTimeDisplay.setAttribute("currentTemp", "c");
 
   currentTimeDisplayContainer.appendChild(currentTimeDisplay);
@@ -652,6 +727,7 @@ function displayLocationInfo(location, currentData, todayForecast) {
   const cTemp = document.createElement("span");
 
   cTemp.textContent = "C";
+  cTemp.classList.add("currentActive");
   cTemp.classList.add("cTemp");
 
   changeTemperatureButton.appendChild(cTemp);
@@ -718,6 +794,8 @@ function displayLocationInfo(location, currentData, todayForecast) {
 /* harmony default export */ const display_location_information_displayLocationInfo = (displayLocationInfo);
 
 ;// CONCATENATED MODULE: ./src/components/DOM/display_location_information/displayTodayForecast.js
+
+
 function displayTodayForecast(forecastArr) {
   // Will display every hour of today's date
   const todayForeCastContainer = document.createElement("section");
@@ -733,7 +811,9 @@ function displayTodayForecast(forecastArr) {
     temperatureDisplay.setAttribute("currentTemp", "c");
 
     const timeDisplay = document.createElement("h5");
-    timeDisplay.textContent = `${forecastArr[i].time}`;
+    timeDisplay.textContent = `${convert24Hto12H(
+      forecastArr[i].time
+    )}`;
 
     const imgDisplay = document.createElement("img");
     imgDisplay.src = `${forecastArr[i].condition.icon}`;
@@ -754,6 +834,9 @@ function displayTodayForecast(forecastArr) {
 /* harmony default export */ const display_location_information_displayTodayForecast = (displayTodayForecast);
 
 ;// CONCATENATED MODULE: ./src/components/DOM/display_location_information/displayLocationPage.js
+/* eslint-disable import/no-cycle */
+
+
 
 
 
