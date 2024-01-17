@@ -1,2 +1,2 @@
-*{box-sizing:border-box;margin:0;padding:0}.hello{color:red}.show{opacity:1;visibility:visible!important}
+*{box-sizing:border-box;margin:0;padding:0}.hello{color:red}.show{opacity:1;visibility:visible!important}.changeTemperatureBtn{background-color:#000;display:flex;margin-bottom:15px;margin-top:15px;padding:20px}.currentActive{background-color:green;border-radius:20px;color:#000;font-weight:900;padding:10px 20px}
 /*# sourceMappingURL=main.css.map*/
