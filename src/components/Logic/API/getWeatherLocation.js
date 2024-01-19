@@ -16,10 +16,10 @@ async function getCurrentWeatherLocationData(location) {
 
   await loadingComponent(response);
 
-  
+
   try {
     const weatherResponse = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=bcbc49485145475c855175911231711&q=${location}&days=3`,
+      `https://api.weatherapi.com/v1/forecast.json?key=bcbc49485145475c855175911231711&q=${location}&days=3`,
       { mode: "cors" }
     );
 
