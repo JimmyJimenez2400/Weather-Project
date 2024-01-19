@@ -1,19 +1,21 @@
-function loadingComponent() {
+async function loadingComponent(GIPHY) {
   const contentContainer = document.querySelector("#content");
   const loadingContainer = document.createElement("div");
 
   loadingContainer.classList.add("loadingContainer");
 
-  const loadingText = document.createElement("h1");
+  const loadingImage = document.createElement("img");
 
-  loadingText.textContent = "Gathering data... AHHAHAhAHAHAHAHAHAHAH";
+  loadingImage.src = GIPHY;
+
+  // loadingImage.src = `${GIPHY.data.images.original.url}`;
 
   const loadingContent = document.createElement("img");
 
   loadingContent.classList.add("loadingContent");
   loadingContainer.classList.add("show");
 
-  loadingContainer.appendChild(loadingText);
+  loadingContainer.appendChild(loadingImage);
 
   loadingContainer.appendChild(loadingContent);
 

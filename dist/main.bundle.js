@@ -503,42 +503,79 @@ var update = injectStylesIntoStyleTag_default()(style/* default */.Z, options);
        /* harmony default export */ const src_style = (style/* default */.Z && style/* default */.Z.locals ? style/* default */.Z.locals : undefined);
 
 ;// CONCATENATED MODULE: ./src/components/DOM/loadingComponent/loadingComponent.js
-function loadingComponent() {
+async function loadingComponent(GIPHY) {
+  const contentContainer = document.querySelector("#content");
   const loadingContainer = document.createElement("div");
 
-  loadingComponent.classList.add("loadingContainer");
+  loadingContainer.classList.add("loadingContainer");
 
-  const loadingText = document.createElement("h1");
+  const loadingImage = document.createElement("img");
 
-  loadingText.textContent = "Gathering data...";
+  loadingImage.src = GIPHY;
+
+  // loadingImage.src = `${GIPHY.data.images.original.url}`;
 
   const loadingContent = document.createElement("img");
 
   loadingContent.classList.add("loadingContent");
-  loadingComponent.classList.add("active");
+  loadingContainer.classList.add("show");
 
-  loadingContainer.appendChild(loadingText);
+  loadingContainer.appendChild(loadingImage);
 
   loadingContainer.appendChild(loadingContent);
+
+  contentContainer.appendChild(loadingContainer);
 
   return loadingContainer;
 }
 
 function hideLoadingComponent() {
   const getLoadingComponent = document.querySelector(".loadingContainer");
-  getLoadingComponent.classList.remove("active");
-  getLoadingComponent.classList.add("hidden");
+  getLoadingComponent.remove();
 }
 
 
 
+;// CONCATENATED MODULE: ./src/components/Logic/API/getGIPHYData.js
+async function getGIPHYData() {
+  try {
+    const GIPHYResponse = await fetch(
+      "https://api.giphy.com/v1/gifs/translate?api_key=jTqTuwCeo5smFY9bZw2BuQCw1O6Sy89g&s=loading",
+      { mode: "cors" }
+    );
+
+    if (!GIPHYResponse.ok) {
+      throw new Error("FAILED STATUS");
+    }
+
+    if (GIPHYResponse.status === 200) {
+      const json = await GIPHYResponse.json();
+      return json;
+    }
+  } catch (error) {
+    return console.error(`ERROR HAS BEEN DETECTED: ${error}`);
+  }
+}
+
+/* harmony default export */ const API_getGIPHYData = (getGIPHYData);
+
 ;// CONCATENATED MODULE: ./src/components/Logic/API/getWeatherLocation.js
+
+
 
 
 // eslint-disable-next-line consistent-return
 async function getCurrentWeatherLocationData(location) {
-  // SHOW LOADING ANIMATION HERE
-  loadingComponent();
+  // CALL GIPHYAPI
+  const GIPHYData = API_getGIPHYData().then(
+    (result) => result.data.images.original.url
+  );
+
+  const response = await GIPHYData;
+
+  await loadingComponent(response);
+
+  
   try {
     const weatherResponse = await fetch(
       `http://api.weatherapi.com/v1/forecast.json?key=bcbc49485145475c855175911231711&q=${location}&days=3`,

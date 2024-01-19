@@ -3,10 +3,20 @@ import {
   hideLoadingComponent,
 } from "../../DOM/loadingComponent/loadingComponent";
 
+import getGIPHYData from "./getGIPHYData";
+
 // eslint-disable-next-line consistent-return
 async function getCurrentWeatherLocationData(location) {
-  // SHOW LOADING ANIMATION HERE
-  loadingComponent();
+  // CALL GIPHYAPI
+  const GIPHYData = getGIPHYData().then(
+    (result) => result.data.images.original.url
+  );
+
+  const response = await GIPHYData;
+
+  await loadingComponent(response);
+
+  
   try {
     const weatherResponse = await fetch(
       `http://api.weatherapi.com/v1/forecast.json?key=bcbc49485145475c855175911231711&q=${location}&days=3`,
