@@ -2,6 +2,7 @@
 
 import getCurrentWeatherLocationData from "../Logic/API/getWeatherLocation";
 
+// eslint-disable-next-line import/no-cycle
 import displayLocationPage from "../DOM/display_location_information/displayLocationPage";
 
 import getLocationInformation from "../Logic/getLocationData";

@@ -42,7 +42,7 @@ function displayLocationInfo(location, currentData, todayForecast) {
 
   const searchElement = displaySearchElement();
 
-  const changeTemperatureButton = document.createElement("p");
+  const changeTemperatureButton = document.createElement("button");
   changeTemperatureButton.classList.add("changeTemperatureBtn");
 
   const cTemp = document.createElement("span");

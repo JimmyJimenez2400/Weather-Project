@@ -537,6 +537,7 @@ function hideLoadingComponent() {
 
 
 ;// CONCATENATED MODULE: ./src/components/Logic/API/getGIPHYData.js
+// eslint-disable-next-line consistent-return
 async function getGIPHYData() {
   try {
     const GIPHYResponse = await fetch(
@@ -632,9 +633,31 @@ function displaySearchElement() {
 
 /* harmony default export */ const display_location_information_searchElement = (displaySearchElement);
 
+;// CONCATENATED MODULE: ./src/components/DOM/display_location_information/changeTempActive.js
+function changeTempActiveDisplay() {
+  // grab cTemp and fTemp and use ternary operator or if statement
+  const cTemp = document.querySelector(".cTemp");
+  const fTemp = document.querySelector(".fTemp");
+
+  if (cTemp.classList.contains("currentActive")) {
+    console.log("C TEMP HAS CURRENTACIVE");
+    cTemp.classList.remove("currentActive");
+    fTemp.classList.add("currentActive");
+  } else {
+    fTemp.classList.remove("currentActive");
+    cTemp.classList.add("currentActive");
+  }
+}
+
+/* harmony default export */ const changeTempActive = (changeTempActiveDisplay);
+
 ;// CONCATENATED MODULE: ./src/components/Logic/changeTemperature.js
+
+
 function changeCurrentTemperature(currentData) {
   const currentTemperature = document.querySelectorAll(".temperature_c");
+
+  changeTempActive();
 
   for (let i = 0; i < currentTemperature.length; i += 1) {
     const currentTemperatureAttribute =
@@ -672,7 +695,6 @@ function changeHourTemperature(forecast) {
     }
   }
 }
-
 
 function changeTemperature(forecast, currentData) {
   changeCurrentTemperature(currentData);
@@ -758,7 +780,7 @@ function displayLocationInfo(location, currentData, todayForecast) {
 
   const searchElement = display_location_information_searchElement();
 
-  const changeTemperatureButton = document.createElement("p");
+  const changeTemperatureButton = document.createElement("button");
   changeTemperatureButton.classList.add("changeTemperatureBtn");
 
   const cTemp = document.createElement("span");
@@ -957,6 +979,7 @@ async function getCurrentData(value) {
 
 
 
+// eslint-disable-next-line import/no-cycle
 
 
 

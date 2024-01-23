@@ -1,3 +1,4 @@
+// eslint-disable-next-line consistent-return
 async function getGIPHYData() {
   try {
     const GIPHYResponse = await fetch(

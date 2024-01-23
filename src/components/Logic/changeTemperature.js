@@ -1,5 +1,9 @@
+import changeTempActiveDisplay from "../DOM/display_location_information/changeTempActive";
+
 function changeCurrentTemperature(currentData) {
   const currentTemperature = document.querySelectorAll(".temperature_c");
+
+  changeTempActiveDisplay();
 
   for (let i = 0; i < currentTemperature.length; i += 1) {
     const currentTemperatureAttribute =
@@ -37,7 +41,6 @@ function changeHourTemperature(forecast) {
     }
   }
 }
-
 
 function changeTemperature(forecast, currentData) {
   changeCurrentTemperature(currentData);
